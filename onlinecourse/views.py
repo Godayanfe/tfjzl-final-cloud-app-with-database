@@ -61,15 +61,15 @@ def logout_request(request):
 
 def index(request):
     context = {}
+    courses = Course.objects.all()
     if request.user.is_authenticated:
-        courses = Course.objects.filter(users=request.user)
         for course in courses:
-            course.is_enrolled = True
-        other_courses = Course.objects.exclude(users=request.user)
-        context['enrolled_courses'] = courses
-        context['courses'] = other_courses
-    else:
-        context['courses'] = Course.objects.all()
+            try:
+                Enrollment.objects.get(user=request.user, course=course)
+                course.is_enrolled = True
+            except:
+                course.is_enrolled = False
+    context['courses'] = courses
     return render(request, 'onlinecourse/course_list_bootstrap.html', context)
 
 
