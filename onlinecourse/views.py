@@ -58,7 +58,6 @@ def logout_request(request):
     logout(request)
     return HttpResponseRedirect(reverse(viewname='onlinecourse:index'))
 
-
 def index(request):
     context = {}
     courses = Course.objects.all()
@@ -69,7 +68,7 @@ def index(request):
                 course.is_enrolled = True
             except:
                 course.is_enrolled = False
-    context['courses'] = courses
+    context['course_list'] = courses
     return render(request, 'onlinecourse/course_list_bootstrap.html', context)
 
 
